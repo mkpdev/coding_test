@@ -1,24 +1,8 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* required ruby version 2.6.6
 
-Things you may want to cover:
+* This app has a Tool Model (name, language, json_spec) and a respective
+controller to serve CRUD operation for that
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* There are 2 services for interaction to GitHub and Lokalise API
