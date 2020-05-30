@@ -1,4 +1,5 @@
 class ToolsController < ApplicationController
+  protect_from_forgery except: :webhook
   before_action :set_tool, only: %i[show edit update destroy update_translation]
 
   def index
@@ -52,6 +53,22 @@ class ToolsController < ApplicationController
   def update_translation
     @tool.update_translation
     redirect_to tools_path
+  end
+
+  # https://mkpdev.ngrok.io/tools/webhook
+  def webhook
+    pr = params[:pull_request]
+    if pr[:state].eql?('closed') && pr[:merged].eql?(true)
+      # title will be like: tool-1-BMI.en.json | tool-<id>-<file_name>
+      title = pr[:title]
+      id = title.split('-')[1]
+      file_name = title.sub(/.*-\d-/, '')
+      file_content = JSON.parse(File.read(file_name))
+      tool = Tool.find(id)
+      tool.update_attribute(:json_spec, file_content)
+
+      render json: { status: 200 }
+    end
   end
 
   private
